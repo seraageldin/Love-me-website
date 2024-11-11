@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        REPO_URL = "https://github.com/seraageldin/CI-CD-Project-w-Jenkins-Pipeline.git"
+        REPO_URL = "https://github.com/seraageldin/websitetest.git"
         BRANCH_NAME = "main" // Replace with your branch name if different
         IMAGE_NAME = "project_image"
         CONTAINER_NAME = "cont_1"
