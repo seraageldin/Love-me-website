@@ -1,4 +1,11 @@
-We will host our application on an nginx container
-we will use jenkins for the cicd and it will be installed as a container 
+installing jenkins on our localhost machine on port 8080
 
-first go to the jenkins installation file to get the instructions for jenkisn installation
+making the dockerfile with image nginx
+
+deploying our docker container on nginx image
+
+defining the jenkins pipeline 
+
+project will be deployed as a dynamic webpage with a moving button that you wont catch to answer " do you love me question? "
+cannot take no for an answer :D
+
