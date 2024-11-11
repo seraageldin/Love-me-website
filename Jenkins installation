@@ -1,21 +1,2 @@
-/ we will install jenkins  as a container
-docker pull jenkins/jenkins:lts / pulling jenkins latest image
-
-/ Run Jenkins on a specific port 8080 You also need to map a volume for Jenkins data to persist between restarts.
-
-docker run -d \
-  --name jenkins \
-  -p 8080:8080 \ // if you had any issue try changing port to 8081:8080
-  -p 50000:50000 \
-  -v jenkins_home:/var/jenkins_home \
-  jenkins/jenkins:lts
-
-docker logs -f jenkins / if you need to check logs when it runs
-
-http://localhost:8080 / access jenkins interface 
-
-On the first login, you’ll need an admin password
-
-docker exec -it jenkins cat /var/jenkins_home/secrets/initialAdminPassword
 
 
