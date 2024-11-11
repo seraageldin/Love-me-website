@@ -1,39 +1,84 @@
 pipeline {
     agent any
-    
+
+    environment {
+        REPO_URL = "https://github.com/seraageldin/CI-CD-Project-w-Jenkins-Pipeline.git"
+        BRANCH_NAME = "main" // Replace with your branch name if different
+        IMAGE_NAME = "project_image"
+        CONTAINER_NAME = "cont_1"
+        VOLUME_NAME = "vol_1"
+    }
+
     stages {
-        stage('Clone Repository') {
+        stage('Code Clone') {
             steps {
-                git 'https://github.com/seraageldin/websitetest.git'
-            }
-        }
-        
-        stage('Build Docker Image') {
-            steps {
+                echo 'Cloning the repository...'
+                git branch: "${BRANCH_NAME}", url: "${REPO_URL}"
                 script {
-                    // Build Docker image for Nginx with the website files
-                    sh 'docker build -t my-website-image .'
+                    // List contents to verify cloning
+                    sh "ls -la ${JENKINS_HOME}/workspace/${JOB_NAME}"
+                }
+            }
+            post {
+                success {
+                    echo 'Code cloning succeeded'
+                }
+                failure {
+                    echo 'Code cloning failed'
                 }
             }
         }
-        
-        stage('Run Nginx Container') {
+
+        stage('Build Docker Image') {
             steps {
+                echo 'Building Docker image...'
                 script {
-                    // Stop any previous container to avoid conflicts
-                    sh 'docker stop love-website-container || true && docker rm love-website-container || true'
-                    
-                    // Run the new container on port 8080
-                    sh 'docker run -d --name love-website-container -p 8080:80 my-website-image'
+                    sh """
+                        cd ${JENKINS_HOME}/workspace/${JOB_NAME}/
+                        sudo docker build -t ${IMAGE_NAME}:${BUILD_NUMBER} .
+                    """
+                }
+            }
+            post {
+                success {
+                    echo 'Docker image build succeeded'
+                }
+                failure {
+                    echo 'Docker image build failed'
+                }
+            }
+        }
+
+        stage('Deploy Docker Container') {
+            steps {
+                echo 'Deploying Docker container...'
+                script {
+                    // Stop and remove existing container if it exists
+                    sh """
+                        sudo docker stop ${CONTAINER_NAME} || true
+                        sudo docker rm ${CONTAINER_NAME} || true
+                        sudo docker volume create ${VOLUME_NAME} || true
+                        sudo docker run -d --name ${CONTAINER_NAME} -p 80:80 -v ${VOLUME_NAME}:/usr/local/apache2/htdocs ${IMAGE_NAME}:${BUILD_NUMBER}
+                    """
+                }
+            }
+            post {
+                success {
+                    echo 'Container deployed successfully'
+                }
+                failure {
+                    echo 'Container deployment failed'
                 }
             }
         }
     }
-    
+
     post {
-        always {
-            // Clean up workspace after pipeline run
-            cleanWs()
+        success {
+            echo 'CI/CD pipeline completed successfully'
+        }
+        failure {
+            echo 'CI/CD pipeline failed'
         }
     }
 }
