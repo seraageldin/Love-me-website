@@ -5,7 +5,7 @@ pipeline {
         REPO_URL = "https://github.com/seraageldin/websitetest.git"
         BRANCH_NAME = "main" // Replace with your branch name if different
         IMAGE_NAME = "project_image"
-        CONTAINER_NAME = "cont_1"
+        CONTAINER_NAME = "love-website-container"
         VOLUME_NAME = "vol_1"
     }
 
@@ -58,7 +58,7 @@ pipeline {
                         sudo docker stop ${CONTAINER_NAME} || true
                         sudo docker rm ${CONTAINER_NAME} || true
                         sudo docker volume create ${VOLUME_NAME} || true
-                        sudo docker run -d --name ${CONTAINER_NAME} -p 80:80 -v ${VOLUME_NAME}:/usr/local/apache2/htdocs ${IMAGE_NAME}:${BUILD_NUMBER}
+                        sudo docker run -d --name ${CONTAINER_NAME} -p 80:80 -v ${VOLUME_NAME}:/usr/share/nginx/html ${IMAGE_NAME}:${BUILD_NUMBER}
                     """
                 }
             }
