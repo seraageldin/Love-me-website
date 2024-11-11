@@ -1,5 +1,5 @@
-# Use the official Apache HTTP server as the base image
-FROM httpd:latest
+# Use the official Nginx image as a base
+FROM nginx:latest
 
-# Copy all web files to the Apache document root
-COPY index.html /usr/local/apache2/htdocs
+# Copy website files to the Nginx HTML directory
+COPY . /usr/share/nginx/html
