@@ -6,6 +6,8 @@ deploying our docker container on nginx image
 
 defining the jenkins  pipeline 
 
+docker inspect <container id>
+
 project will be deployed as a dynamic webpage with a moving button that you wont catch to answer " do you love me question? "
 cannot take no for an answer :D
 
