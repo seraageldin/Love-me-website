@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git 'https://github.com/your-username/my-website.git'
+                git 'https://github.com/seraageldin/websitetest.git'
             }
         }
         
@@ -21,10 +21,10 @@ pipeline {
             steps {
                 script {
                     // Stop any previous container to avoid conflicts
-                    sh 'docker stop my-website-container || true && docker rm my-website-container || true'
+                    sh 'docker stop love-website-container || true && docker rm love-website-container || true'
                     
                     // Run the new container on port 8080
-                    sh 'docker run -d --name my-website-container -p 8080:80 my-website-image'
+                    sh 'docker run -d --name love-website-container -p 8080:80 my-website-image'
                 }
             }
         }
